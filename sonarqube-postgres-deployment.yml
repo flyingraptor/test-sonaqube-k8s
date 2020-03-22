@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarqube-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: sonarqube-postgres
+  template:
+    metadata:
+      name: sonarqube-postgres
+      labels:
+        name: sonarqube-postgres
+    spec:
+      containers:
+        - name: sonarqube-postgres
+          image: postgres:12.2
+          env:
+            - name: "POSTGRES_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres_pwd
+          ports:
+            - containerPort: 5432
+              name: postgresport
+          volumeMounts:
+            # This name must match the volumes.name below.
+            - name: sonarqube-postgres-storage
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+      volumes:
+        - name: sonarqube-postgres-storage
+          persistentVolumeClaim:
+            claimName: sonarqube-postgres-persistence-volume-claim
