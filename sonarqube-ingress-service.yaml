@@ -8,7 +8,8 @@ metadata:
     # UPDATE THIS LINE ABOVE
 spec:
   rules:
-    - http:
+    - host: search.jobbortunity.eu
+      http:
         paths:
           - path: /?(.*)
           # UPDATE THIS LINE ABOVE

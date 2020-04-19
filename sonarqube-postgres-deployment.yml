@@ -39,3 +39,5 @@ spec:
         - name: sonarqube-postgres-storage
           persistentVolumeClaim:
             claimName: sonarqube-postgres-persistence-volume-claim
+      nodeSelector:
+        dedicatedfor: postgresdb
